@@ -1,0 +1,145 @@
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+     body {
+      background: linear-gradient(180deg, #fff7ec 0%, #fff2e3 50%, #f7fff3 100%);
+      color: #4f3a2d;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* === Navbar === */
+    nav {
+      background-color: #FFF8E7;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 40px;
+      box-shadow: 0 2px 6px rgba(120, 56, 56, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: #B97A57;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #5f2525;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 25px;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover {
+      background-color: #B97A57;
+      color: white;
+    }
+    main {
+      max-width: 1000px;
+      margin: 3rem auto;
+      background: var(--panel);
+      border-radius: 2rem;
+      padding: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 0.8rem;
+      margin-top: 2rem;
+    }
+
+    .day {
+      background: rgba(230, 197, 197, 0.233);
+      border-radius: 1rem;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .day:hover {
+      background: var(--softgreen);
+      color: white;
+      transform: translateY(-3px);
+    }
+    .day.active {
+      background: var(--potato);
+      color: rgb(136, 99, 99);
+      font-weight: 600;
+    }
+
+    .task-panel {
+      margin-top: 2rem;
+      background: white;
+      border-radius: 1.5rem;
+      padding: 1.5rem;
+    }
+    .task-input {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .task-input input {
+      flex: 1;
+      padding: 0.5rem;
+      border-radius: 0.5rem;
+      border: 1px solid #6d5656;
+    }
+    .task-input button {
+      background: var(--softgreen);
+      color: rgb(37, 12, 12);
+      border: none;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+    }
+    .task-list { list-style: none; padding: 0; margin: 0; }
+    .task-list li {
+      background: var(--panel);
+      padding: 0.7rem 1rem;
+      border-radius: 0.8rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .task-list li.done span {
+      text-decoration: line-through;
+      color: gray;
+    }
+    .delete-btn {
+      color: tomato;
+      font-size: 1.2rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    #harvestMsg {
+      margin-top: 1rem;
+      text-align: center;
+      color: var(--softgreen);
+      font-weight: 600;
+      display: none;
+    }
