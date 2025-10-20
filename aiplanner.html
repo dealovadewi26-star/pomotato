@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomotato 🧅 | AI Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../pomotato/css/aiplanner.css">
+</head>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">🥔 Pomotato</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="moodtracker.html">Mood Tracker</a></li>
+      <li><a href="yourgarden.html">Your Garden</a></li>
+    </ul>
+  </nav>
+
+  <!-- AI Planner Section -->
+  <section>
+    <h1>🧅 AI Planner</h1>
+    <p>Let your onion buddy plan your day smartly — enter your goals below and watch the AI create a perfect schedule!</p>
+
+    <textarea id="userInput" placeholder="e.g., I want to finish my homework, study English, and relax"></textarea>
+    <button onclick="getAIPlan()">Generate My Plan</button>
+
+    <div id="aiResult"></div>
+  </section>
+
+  <footer>
+    <p>© 2025 Pomotato. All Rights Reserved 🥔</p>
+  </footer>
+
+  <script>
+    async function getAIPlan() {
+      const userInput = document.getElementById("userInput").value;
+      const aiResult = document.getElementById("aiResult");
+
+      aiResult.innerText = "Thinking... 🧠";
+
+      // TEMP: Fake AI output until backend added
+      // Later, this will connect to OpenAI API
+      setTimeout(() => {
+        aiResult.innerText = 
+          `Here’s your plan for today:\n\n🥔 Focus Block 1: ${userInput.split(',')[0] || 'Task 1'}\n🌿 Take a short break\n🥔 Focus Block 2: ${userInput.split(',')[1] || 'Task 2'}\n🪴 End with reflection and gratitude 💚`;
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>
+
+
+

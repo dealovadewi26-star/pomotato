@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomotato 🧅 | AI Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../pomotato/css/todolist.css">
+</head>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">🥔 Pomotato</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="moodtracker.html">Mood Tracker</a></li>
+      <li><a href="yourgarden.html">Your Garden</a></li>
+    </ul>
+  </nav>
+<main>
+    <h1>🪴 Pomotato To-Do Garden</h1>
+    <p style="text-align:center;color:#666;">Grow your focus with daily tasks 🌱</p>
+
+    <div class="calendar" id="calendar"></div>
+
+    <div class="task-panel">
+      <h2 id="dateTitle" style="color:var(--potato);">Select a date</h2>
+      <div class="task-input">
+        <input id="taskInput" placeholder="Add a new task...">
+        <button id="addTask">Add</button>
+      </div>
+      <ul class="task-list" id="taskList"></ul>
+      <div id="harvestMsg">🌿 Yay! You harvested a good day 🥕💚</div>
+    </div>
+  </main>
+
+  <script>
+    const calendar = document.getElementById("calendar");
+    const taskList = document.getElementById("taskList");
+    const dateTitle = document.getElementById("dateTitle");
+    const addTask = document.getElementById("addTask");
+    const taskInput = document.getElementById("taskInput");
+    const harvestMsg = document.getElementById("harvestMsg");
+
+    const tasks = JSON.parse(localStorage.getItem("pomotato_calendar_tasks")) || {};
+    const moods = JSON.parse(localStorage.getItem("pomotato_moods")) || {};
+    const garden = JSON.parse(localStorage.getItem("pomotato_garden")) || {};
+
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth();
+    const end = new Date(year, month + 1, 0).getDate();
+    let selectedDate = null;
+
+    function getMoodEmoji(dateKey) {
+      const mood = moods[dateKey];
+      const emojis = { happy:"🥕", sad:"🥦", neutral:"🥔", angry:"🌶", loved:"🍅", calm:"🥬" };
+      return emojis[mood] || "🌱";
+    }
+
+    function renderCalendar() {
+      calendar.innerHTML = "";
+      for (let d = 1; d <= end; d++) {
+        const dateKey = new Date(year, month, d).toDateString();
+        const div = document.createElement("div");
+        div.className = "day";
+        div.innerHTML = `${getMoodEmoji(dateKey)}<br>${d}`;
+        div.addEventListener("click", () => openDay(dateKey, div));
+        calendar.appendChild(div);
+      }
+    }
+
+    function openDay(dateKey, div) {
+      document.querySelectorAll(".day").forEach(day => day.classList.remove("active"));
+      div.classList.add("active");
+      selectedDate = dateKey;
+      dateTitle.textContent = `🪴 Tasks for ${dateKey}`;
+      renderTasks();
+    }
+
+    function renderTasks() {
+      const list = tasks[selectedDate] || [];
+      taskList.innerHTML = "";
+      list.forEach((task, i) => {
+        const li = document.createElement("li");
+        if (task.done) li.classList.add("done");
+        li.innerHTML = `
+          <input type="checkbox" ${task.done ? "checked" : ""}>
+          <span>${task.text}</span>
+          <button class="delete-btn">×</button>
+        `;
+        li.querySelector("input").addEventListener("change", e => {
+          list[i].done = e.target.checked;
+          saveTasks(list);
+        });
+        li.querySelector(".delete-btn").addEventListener("click", () => {
+          list.splice(i, 1);
+          saveTasks(list);
+        });
+        taskList.appendChild(li);
+      });
+      checkHarvest(list);
+    }
+
+    function checkHarvest(list) {
+      const total = list.length;
+      const done = list.filter(t => t.done).length;
+      if (total > 0 && done === total) {
+        harvestMsg.style.display = "block";
+        garden[selectedDate] = "grown";
+        localStorage.setItem("pomotato_garden", JSON.stringify(garden));
+      } else {
+        harvestMsg.style.display = "none";
+      }
+    }
+
+    function saveTasks(list) {
+      tasks[selectedDate] = list;
+      localStorage.setItem("pomotato_calendar_tasks", JSON.stringify(tasks));
+      renderTasks();
+    }
+
+    addTask.addEventListener("click", () => {
+      if (!selectedDate) return alert("Select a date first 🌱");
+      const text = taskInput.value.trim();
+      if (!text) return;
+      const list = tasks[selectedDate] || [];
+      list.push({ text, done: false });
+      taskInput.value = "";
+      saveTasks(list);
+    });
+
+    renderCalendar();
+  </script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomotato 🧅 | AI Planner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../pomotato/css/focus.css">
+</head>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">🥔 Pomotato</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="moodtracker.html">Mood Tracker</a></li>
+      <li><a href="yourgarden.html">Your Garden</a></li>
+    </ul>
+  </nav>
+<div class="container">
+  <h1>🍅 Pomotato Timer</h1>
+  <div class="timer" id="timer">25:00</div>
+  <div class="controls">
+    <button id="start">Start</button>
+    <button id="pause">Pause</button>
+    <button id="reset">Reset</button>
+  </div>
+</div>
+
+<script>
+  const timerElement = document.getElementById('timer');
+  const startButton = document.getElementById('start');
+  const pauseButton = document.getElementById('pause');
+  const resetButton = document.getElementById('reset');
+
+  let totalSeconds = 25*60; // 25 minutes
+  let interval = null;
+
+  function updateTimer() {
+    const minutes = Math.floor(totalSeconds/60);
+    const seconds = totalSeconds%60;
+    timerElement.textContent = `${minutes.toString().padStart(2,'0')}:${seconds.toString().padStart(2,'0')}`;
+  }
+
+  startButton.addEventListener('click', () => {
+    if(!interval){
+      interval = setInterval(()=>{
+        if(totalSeconds>0){ totalSeconds--; updateTimer(); }
+        else { clearInterval(interval); interval=null; alert('Pomodoro finished! Take a break 🍅'); }
+      },1000);
+    }
+  });
+
+  pauseButton.addEventListener('click',()=>{ clearInterval(interval); interval=null; });
+  resetButton.addEventListener('click',()=>{ clearInterval(interval); interval=null; totalSeconds=25*60; updateTimer(); });
+
+  updateTimer();
+</script>
+
+</body>
+</html>

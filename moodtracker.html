@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomotato 🧅 | Mood Tracker</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../pomotato/css/mood.css">
+</head>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">🥔 Pomotato</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="moodtracker.html" class="active">Mood Tracker</a></li>
+      <li><a href="yourgarden.html">Your Garden</a></li>
+    </ul>
+  </nav>
+  <section class="mood-container">
+    <h1>Pomotato Mood Tracker 🧘‍♀️</h1>
+    <p>Track your daily mood and reflect on your feelings to keep your mind healthy and happy 🍀</p>
+
+    <div class="mood-buttons">
+      <button class="mood-btn" data-mood="😊">😊 Happy</button>
+      <button class="mood-btn" data-mood="😐">😐 Neutral</button>
+      <button class="mood-btn" data-mood="😔">😔 Sad</button>
+      <button class="mood-btn" data-mood="😡">😡 Angry</button>
+      <button class="mood-btn" data-mood="😴">😴 Tired</button>
+      <button class="mood-btn" data-mood="🤩">🤩 Excited</button>
+    </div>
+
+    <div class="mood-log">
+      <h3>Your Mood Log 📖</h3>
+      <div id="moodEntries"></div>
+      <button class="clear-btn" id="clearLog">Clear Log</button>
+    </div>
+  </section>
+
+  <script>
+    const moodButtons = document.querySelectorAll(".mood-btn");
+    const moodEntries = document.getElementById("moodEntries");
+    const clearLog = document.getElementById("clearLog");
+
+    function saveMood(mood) {
+      const now = new Date();
+      const date = now.toLocaleDateString();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      const entry = document.createElement("div");
+      entry.classList.add("mood-entry");
+      entry.textContent = `${mood} - ${date} at ${time}`;
+      moodEntries.prepend(entry);
+
+      let log = JSON.parse(localStorage.getItem("pomotatoMoods")) || [];
+      log.unshift({ mood, date, time });
+      localStorage.setItem("pomotatoMoods", JSON.stringify(log));
+    }
+
+    moodButtons.forEach(btn => {
+      btn.addEventListener("click", () => saveMood(btn.dataset.mood));
+    });
+
+    clearLog.addEventListener("click", () => {
+      localStorage.removeItem("pomotatoMoods");
+      moodEntries.innerHTML = "";
+    });
+
+    function loadMoodLog() {
+      const log = JSON.parse(localStorage.getItem("pomotatoMoods")) || [];
+      log.forEach(entry => {
+        const div = document.createElement("div");
+        div.classList.add("mood-entry");
+        div.textContent = `${entry.mood} - ${entry.date} at ${entry.time}`;
+        moodEntries.appendChild(div);
+      });
+    }
+
+    loadMoodLog();
+  </script>
+</body>
+</html>

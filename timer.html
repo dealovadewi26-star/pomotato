@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomotato 🧅 | Pomodoro Timer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../pomotato/css/timer.css">
+</head>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">🥔 Pomotato</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="moodtracker.html">Mood Tracker</a></li>
+      <li><a href="yourgarden.html">Your Garden</a></li>
+    </ul>
+  </nav>
+  <img src="brokoli-removebg-preview.png" class="veg" style="top:10%; left:5%; animation-delay: 0s;">
+  <img src="kentang-removebg-preview.png" class="veg" style="top:40%; left:80%; animation-delay: 3s;">
+  <img src="tomat-removebg-preview.png" class="veg" style="top:70%; left:15%; animation-delay: 6s;">
+  <img src="wortel-removebg-preview.png" class="veg" style="top:85%; left:65%; animation-delay: 9s;">
+ 
+<div class="container">
+    <h1>Focus Timer 🌿</h1>
+    <div id="timer">25:00</div>
+    <div>
+      <button id="startBtn">Start</button>
+      <button id="pauseBtn">Pause</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+
+    <div class="xp-section">
+      <div class="xp-bar">
+        <div id="xpFill" class="xp-fill"></div>
+      </div>
+      <div class="xp-text" id="xpText">Focus to grow your garden 🥕</div>
+    </div>
+  </div>
+
+  <script>
+    let timer = 25 * 60;
+    let running = false;
+    let xp = 0;
+    let interval;
+
+    const timerEl = document.getElementById("timer");
+    const xpFill = document.getElementById("xpFill");
+    const xpText = document.getElementById("xpText");
+
+    function updateDisplay() {
+      const min = Math.floor(timer / 60);
+      const sec = timer % 60;
+      timerEl.textContent = `${min.toString().padStart(2, "0")}:${sec.toString().padStart(2, "0")}`;
+      xpFill.style.width = `${xp}%`;
+      xpText.textContent = xp >= 100 ? "XP Full 🌟" : `XP: ${Math.floor(xp)} / 100`;
+    }
+
+    function startTimer() {
+      if (running) return;
+      running = true;
+      interval = setInterval(() => {
+        if (timer > 0) {
+          timer--;
+          xp = Math.min(100, xp + 0.3);
+          updateDisplay();
+        } else {
+          clearInterval(interval);
+          running = false;
+          xp = Math.min(100, xp + 10);
+          xpText.textContent = "Session Complete! 🌽 +10 XP";
+          updateDisplay();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      running = false;
+      clearInterval(interval);
+    }
+
+    function resetTimer() {
+      running = false;
+      clearInterval(interval);
+      timer = 25 * 60;
+      xp = 0;
+      updateDisplay();
+    }
+
+    document.getElementById("startBtn").onclick = startTimer;
+    document.getElementById("pauseBtn").onclick = pauseTimer;
+    document.getElementById("resetBtn").onclick = resetTimer;
+
+    updateDisplay();
+  </script>
+</body>
+</html>

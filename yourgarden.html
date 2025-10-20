@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pomotato 🧅 | Your Garden 🌿</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../pomotato/css/garden.css">
+</head>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav>
+    <div class="logo">🥔 Pomotato</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="profile.html">Profile</a></li>
+      <li><a href="moodtracker.html">Mood Tracker</a></li>
+      <li><a href="yourgarden.html" class="active">Your Garden</a></li>
+    </ul>
+  </nav>
+   <section class="garden-section">
+    <h1>Pomotato — Your Cozy Garden 🌿</h1>
+    <p>Plant, water, and harvest to grow your cozy farm and fill your basket!</p>
+
+    <div class="stats">
+      <span id="xp">XP: 0 / 150</span>
+      <span id="seeds">Seeds: 🌰 3</span>
+    </div>
+
+    <div class="toolbar">
+      <button id="plantBtn">🌱 Plant</button>
+      <button id="waterBtn">💧 Water</button>
+      <button id="harvestBtn">🌾 Harvest</button>
+    </div>
+
+    <div class="garden-grid" id="gardenGrid"></div>
+
+    <div class="harvest-basket" id="basket">
+      🧺 Harvest Basket: <span id="harvestCount">0</span>
+    </div>
+  </section>
+
+  <script>
+    const grid = document.getElementById("gardenGrid");
+    const xpDisplay = document.getElementById("xp");
+    const seedsDisplay = document.getElementById("seeds");
+    const basketCount = document.getElementById("harvestCount");
+
+    let xp = 0;
+    let seeds = 3;
+    let harvested = 0;
+
+    const tiles = [];
+    const gridSize = 15;
+
+    for (let i = 0; i < gridSize; i++) {
+      const tile = document.createElement("div");
+      tile.classList.add("tile");
+      tile.dataset.state = "empty";
+      grid.appendChild(tile);
+      tiles.push(tile);
+    }
+
+    document.getElementById("plantBtn").addEventListener("click", () => {
+      tiles.forEach(tile => {
+        tile.onclick = () => {
+          if (tile.dataset.state === "empty" && seeds > 0) {
+            tile.textContent = "🌱";
+            tile.dataset.state = "planted";
+            seeds--;
+            updateStats();
+          }
+        };
+      });
+    });
+
+    document.getElementById("waterBtn").addEventListener("click", () => {
+      tiles.forEach(tile => {
+        tile.onclick = () => {
+          if (tile.dataset.state === "planted") {
+            tile.textContent = "🌷";
+            tile.dataset.state = "grown";
+            xp += 20;
+            updateStats();
+          }
+        };
+      });
+    });
+
+    document.getElementById("harvestBtn").addEventListener("click", () => {
+      tiles.forEach(tile => {
+        tile.onclick = () => {
+          if (tile.dataset.state === "grown") {
+            tile.textContent = "";
+            tile.dataset.state = "empty";
+            harvested++;
+            xp += 10;
+            seeds++;
+            updateStats();
+          }
+        };
+      });
+    });
+
+    function updateStats() {
+      xpDisplay.textContent = `XP: ${xp} / 150`;
+      seedsDisplay.textContent = `Seeds: 🌰 ${seeds}`;
+      basketCount.textContent = harvested;
+    }
+  </script>
+</body>
+</html>
